@@ -2,12 +2,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 #define TOKEN_DELIM " \t\r\n\a"
 
 char **split_line(char *);
 
-int main(int ac, char **av, char **env)
+int main(int ac, char **av)
 {
 	char *line = NULL;
 	size_t bufsize = 0;
@@ -29,10 +30,7 @@ int main(int ac, char **av, char **env)
 
 			argv = split_line(line);
 			/*execute*/
-			if (execve(argv[0], argv, env) == -1)
-			{
-			perror("Error:");
-			}
+			execve(launch(argv));
 			printf("$ ");
 		}
 	}
@@ -58,4 +56,33 @@ char **split_line(char *line) {
 	tokens[pos] = NULL;
 	
 	return tokens;
+}
+/**
+ *
+ *
+ *
+*/
+int launch(char **argv)
+{
+	pid_t pid;
+	int status;
+
+	pid = fork();
+	if (pid == 0) {
+		/* Child process */
+		if (execve(argv[0], argv) == -1) {
+			perror("lsh");
+		}
+		exit(EXIT_FAILURE);
+	} else if (pid < 0) {
+		/* Error forking */
+		perror("lsh");
+	} else {
+		/* Parent process */
+		do {
+			waitpid(pid, &status, WUNTRACED);
+		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	}
+
+	return 1;
 }
