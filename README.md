@@ -112,24 +112,35 @@
 |
 |-------------------------------------------------------------------|
 |How to suspend the execution of a process until one of its children 
-|terminate?
-|
-|
-|
-|
-|
-|
-|
-|
+|terminate?|
+|----------|
+|A call to wait() blocks the calling process until one of its child
+|processes exits or a signal is received. After child process 
+|terminates, parent continues its execution after wait system call
+|instruction.
+|Example:
+|C program to demonstrate working of wait() 
+|#include<stdio.h> 
+|#include<stdlib.h> 
+|#include<sys/wait.h> 
+|#include<unistd.h> 
+|  
+|int main() 
+|{ 
+|    pid_t cpid; 
+|    if (fork()== 0) 
+|        exit(0);           /* terminate child */
+|    else
+|        cpid = wait(NULL); /* reaping parent */
+|    printf("Parent pid = %d\n", getpid()); 
+|    printf("Child pid = %d\n", cpid); 
+|  
+|    return 0; 
+|} 
 |-------------------------------------------------------------------|
-|What is EOF / end-of-file?
-|
-|
-|
-|
-|
-|
-|
-|
-|
+|What is EOF / end-of-file?|
+|--------------------------|
+|In computing, end-of-file (commonly abbreviated EOF) is a condition
+|in a computer operating system where no more data can be read from 
+|a data source. The data source is usually called a file or stream.
 |-------------------------------------------------------------------|
