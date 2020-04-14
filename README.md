@@ -111,19 +111,18 @@
 |
 |
 |-------------------------------------------------------------------|
-|How to suspend the execution of a process until one of its children 
-|terminate?|
-|----------|
+|How to suspend the execution of a process until one of its children terminate?|
+|------------------------------------------------------------------------------|
 |A call to wait() blocks the calling process until one of its child
 |processes exits or a signal is received. After child process 
 |terminates, parent continues its execution after wait system call
 |instruction.
-|Example:
-|C program to demonstrate working of wait() 
-|#include<stdio.h> 
-|#include<stdlib.h> 
-|#include<sys/wait.h> 
-|#include<unistd.h>  
+Example:
+C program to demonstrate working of wait() 
+#include<stdio.h> 
+#include<stdlib.h> 
+#include<sys/wait.h> 
+#include<unistd.h>  
 int main() 
 { 
     pid_t cpid; 
