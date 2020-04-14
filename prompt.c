@@ -7,18 +7,21 @@
 #define TOKEN_DELIM " \t\r\n\a"
 
 char **split_line(char *);
+int launch(char **);
+void print_env();
+extern char** environ;
 
 int main(int ac, char **av)
 {
 	char *line = NULL;
 	size_t bufsize = 0;
-	char **argv = NULL;
+	char **tokens = NULL;
 	(void)ac;
 	(void)av;
 	/*char *envp[] = {
-		"PATH=/bin"
-	};
-	envp[0] = getenv("PATH");]*/
+		(char *) "PATH=/bin", NULL
+	};*/
+	/*envp[0] = getenv("PATH");]*/
 	/*extern char** environ;*/
 
 	printf("$ ");
@@ -28,9 +31,20 @@ int main(int ac, char **av)
 		} else {
 			printf("%s", line);
 
-			argv = split_line(line);
+			tokens = split_line(line);
 			/*execute*/
-			execve(launch(argv));
+			if (strcmp(tokens[0], "exit") == 0)
+			{
+				return (0);
+			}
+			else if (strcmp(tokens[0], "env") == 0)
+			{
+				print_env();
+			}
+			else
+			{
+				launch(tokens);
+			}	
 			printf("$ ");
 		}
 	}
@@ -64,13 +78,14 @@ char **split_line(char *line) {
 */
 int launch(char **argv)
 {
+	char *envp[] = { (char *) "PATH=/bin", NULL };
 	pid_t pid;
 	int status;
 
 	pid = fork();
 	if (pid == 0) {
 		/* Child process */
-		if (execve(argv[0], argv) == -1) {
+		if (execve(argv[0], argv, envp) == -1) {
 			perror("lsh");
 		}
 		exit(EXIT_FAILURE);
@@ -85,4 +100,16 @@ int launch(char **argv)
 	}
 
 	return 1;
+}
+
+void print_env()
+{
+	/*char *command[] = {"/usr/bin/printenv"};
+	launch(command);*/
+	int i = 1;
+	char *s = *environ;
+	for (; s; i++) {
+		printf("%s\n", s);
+		s = *(environ+i);
+	}
 }
