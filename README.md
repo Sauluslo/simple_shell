@@ -117,6 +117,7 @@
 |processes exits or a signal is received. After child process 
 |terminates, parent continues its execution after wait system call
 |instruction.
+
 Example:
 C program to demonstrate working of wait() 
 #include<stdio.h> 
@@ -134,7 +135,8 @@ int main()
     printf("Child pid = %d\n", cpid); 
   
     return 0; 
-} 
+}
+ 
 |-------------------------------------------------------------------|
 |What is EOF / end-of-file?|
 |--------------------------|
