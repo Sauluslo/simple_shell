@@ -84,15 +84,12 @@
 |
 |
 |-------------------------------------------------------------------|
-|What are the three prototypes of main?
-|
-|
-|
-|
-|
-|
-|
-|
+|What are the three prototypes of main?|
+|--------------------------------------|
+|So far we have seen that main could have different prototypes:
+|int main(void);
+|int main(int argc, char **argv);
+|int main(int argc, char **argv, char **env);
 |-------------------------------------------------------------------|
 |How does the shell use the PATH to find the programs?
 |
