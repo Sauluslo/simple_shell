@@ -6,6 +6,8 @@
 #include <sys/stat.h>
 #include "shell.h"
 
+#define DEL_DEF " \t\r\n\a"
+
 void print_env(void);
 int execute(char **);
 char **split_line(char *, char *);
@@ -17,23 +19,25 @@ char *concat_command(char *, char *);
 */
 int main(void)
 {
-	char *line = NULL;
 	size_t bufsize = 0;
-	char **tokens = NULL;
 	int status;
 
 	printf("$ ");
 	while (1)
 	{
+		char *line = NULL;
+
 		if (getline(&line, &bufsize, stdin) == -1)
 		{
 			return (0);
 		}
 		else
 		{
-			tokens = split_line(line, " \t\r\n\a");
+			char **tokens = split_line(line, DEL_DEF);
 			if (_strcmp(tokens[0], "exit") == 0)
 			{
+				free(tokens);
+				free(line);
 				return (0);
 			}
 			else if (_strcmp(tokens[0], "env") == 0)
@@ -45,10 +49,10 @@ int main(void)
 				status = execute(tokens);
 			}
 			printf("$ ");
+			free(tokens);
 		}
-		free(tokens);
+		free(line);
 	}
-
 	exit(status);
 }
 /**
@@ -60,19 +64,28 @@ int main(void)
 */
 char **split_line(char *line, char *delim)
 {
-	int pos = 0, bufsize = 64;
-	char **tokens = malloc(bufsize * sizeof(char *));
+	int pos = 0, bufsize = 1;
+	char **tokens = malloc((bufsize + 1) * sizeof(char*));
 	char *word;
 
 	word = strtok(line, delim);
 	while (word != NULL)
 	{
-		tokens[pos] = word;
+		if (pos >= bufsize)
+		{
+			bufsize++;
+			tokens = realloc(tokens, (bufsize + 1) * sizeof(char*));
+		}
 		tokens[pos] = word;
 		pos++;
 		word = strtok(NULL, delim);
 	}
 	tokens[pos] = NULL;
+
+	if (pos < bufsize)
+	{
+		tokens = realloc(tokens, pos * sizeof(char*));
+	}	
 	return (tokens);
 }
 /**
@@ -93,14 +106,14 @@ int execute(char **argv)
 		struct stat st;
 		int command_found;
 		char *fullpath_command = NULL;
-		char **directories;
+		/*char **directories;
 		char *directory;
 		char *envpath = getenv("PATH");
 		char *envpath_copy = malloc(_strlen(envpath) + 1);
 
 		_strcpy(envpath_copy, envpath);
 		directories = split_line(envpath_copy, ":");
-		directory = directories[i];
+		directory = directories[i];*/
 
 		command_found = stat(argv[0], &st);
 		if (command_found == 0)
@@ -109,6 +122,14 @@ int execute(char **argv)
 		}
 		else
 		{
+			char **directories;
+			char *directory;
+			char *envpath = getenv("PATH");
+			char *envpath_copy = malloc(_strlen(envpath) + 1);
+
+			_strcpy(envpath_copy, envpath);
+			directories = split_line(envpath_copy, ":");
+			directory = directories[i];
 			while (directory != NULL)
 			{
 				fullpath_command = concat_command(directory, argv[0]);
@@ -124,8 +145,9 @@ int execute(char **argv)
 				directory = directories[++i];
 				free(fullpath_command);
 			}
+			free(directories);
+			free(envpath_copy);
 		}
-		free(envpath_copy);
 		if (command_found == 0)
 		{
 			if (execve(fullpath_command, argv, environ) == -1)
