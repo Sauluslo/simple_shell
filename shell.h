@@ -7,4 +7,6 @@
 #include <unistd.h>
 #include <string.h>
 
+extern char **environ;
+
 #endif
