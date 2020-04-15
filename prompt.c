@@ -174,6 +174,6 @@ void print_env(void)
 char *concat_command(char *path, char *command)
 {
 	char *buffer = NULL;
+
 	return (_strcat(path, command, buffer));
 }
-
