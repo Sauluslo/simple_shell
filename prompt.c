@@ -5,10 +5,11 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include "shell.h"
+
 void print_env(void);
 int execute(char **);
 char **split_line(char *, char *);
-char *concat_command(char *, const char *);
+char *concat_command(char *, char *);
 /**
  * main - function
  *
@@ -19,6 +20,7 @@ int main(void)
 	char *line = NULL;
 	size_t bufsize = 0;
 	char **tokens = NULL;
+	int status;
 
 	printf("$ ");
 	while (1)
@@ -30,22 +32,24 @@ int main(void)
 		else
 		{
 			tokens = split_line(line, " \t\r\n\a");
-			if (strcmp(tokens[0], "exit") == 0)
+			if (_strcmp(tokens[0], "exit") == 0)
 			{
 				return (0);
 			}
-			else if (strcmp(tokens[0], "env") == 0)
+			else if (_strcmp(tokens[0], "env") == 0)
 			{
 				print_env();
 			}
 			else
 			{
-				execute(tokens);
+				status = execute(tokens);
 			}
 			printf("$ ");
 		}
 		free(tokens);
 	}
+
+	exit(status);
 }
 /**
  * split_line - use strtok
@@ -92,9 +96,9 @@ int execute(char **argv)
 		char **directories;
 		char *directory;
 		char *envpath = getenv("PATH");
-		char *envpath_copy = malloc(strlen(envpath) + 1);
+		char *envpath_copy = malloc(_strlen(envpath) + 1);
 
-		strcpy(envpath_copy, envpath);
+		_strcpy(envpath_copy, envpath);
 		directories = split_line(envpath_copy, ":");
 		directory = directories[i];
 
@@ -134,7 +138,7 @@ int execute(char **argv)
 			waitpid(pid, &child_status, WUNTRACED);
 		} while (!WIFEXITED(child_status) && !WIFSIGNALED(child_status));
 	}
-	return (1);
+	return (child_status);
 }
 /**
  * print_env - print env
@@ -159,15 +163,9 @@ void print_env(void)
  *
  * Return: Always successful
 */
-char *concat_command(char *path, const char *command)
+char *concat_command(char *path, char *command)
 {
-	char *buffer = malloc(strlen(path) + strlen(command) + 2);
-
-	if (buffer == NULL)
-	{
-		return (NULL);
-	}
-	strcpy(buffer, path);
-	strcat(buffer, "/");
-	return (strcat(buffer, command));
+	char *buffer = NULL;
+	return (_strcat(path, command, buffer));
 }
+
