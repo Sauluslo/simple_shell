@@ -34,6 +34,7 @@ int main(void)
 		else
 		{
 			char **tokens = split_line(line, DEL_DEF);
+
 			if (_strcmp(tokens[0], "exit") == 0)
 			{
 				free(tokens);
@@ -65,7 +66,7 @@ int main(void)
 char **split_line(char *line, char *delim)
 {
 	int pos = 0, bufsize = 1;
-	char **tokens = malloc((bufsize + 1) * sizeof(char*));
+	char **tokens = malloc((bufsize + 1) * sizeof(char *));
 	char *word;
 
 	word = strtok(line, delim);
@@ -74,7 +75,7 @@ char **split_line(char *line, char *delim)
 		if (pos >= bufsize)
 		{
 			bufsize++;
-			tokens = realloc(tokens, (bufsize + 1) * sizeof(char*));
+			tokens = realloc(tokens, (bufsize + 1) * sizeof(char *));
 		}
 		tokens[pos] = word;
 		pos++;
@@ -84,8 +85,8 @@ char **split_line(char *line, char *delim)
 
 	if (pos < bufsize)
 	{
-		tokens = realloc(tokens, pos * sizeof(char*));
-	}	
+		tokens = realloc(tokens, pos * sizeof(char *));
+	}
 	return (tokens);
 }
 /**
@@ -106,14 +107,16 @@ int execute(char **argv)
 		struct stat st;
 		int command_found;
 		char *fullpath_command = NULL;
-		/*char **directories;
-		char *directory;
-		char *envpath = getenv("PATH");
-		char *envpath_copy = malloc(_strlen(envpath) + 1);
+		/**
+		*char **directories;
+		*char *directory;
+		*char *envpath = getenv("PATH");
+		*char *envpath_copy = malloc(_strlen(envpath) + 1);
 
-		_strcpy(envpath_copy, envpath);
-		directories = split_line(envpath_copy, ":");
-		directory = directories[i];*/
+		*_strcpy(envpath_copy, envpath);
+		*directories = split_line(envpath_copy, ":");
+		*directory = directories[i];
+		*/
 
 		command_found = stat(argv[0], &st);
 		if (command_found == 0)
