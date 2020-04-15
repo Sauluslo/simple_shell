@@ -102,20 +102,28 @@ int execute(char **argv)
 		directories = split_line(envpath_copy, ":");
 		directory = directories[i];
 
-		while (directory != NULL)
+		command_found = stat(argv[0], &st);
+		if (command_found == 0)
 		{
-			fullpath_command = concat_command(directory, argv[0]);
-			if (fullpath_command == NULL)
+			fullpath_command = argv[0];
+		}
+		else
+		{
+			while (directory != NULL)
 			{
-				return (EXIT_FAILURE);
+				fullpath_command = concat_command(directory, argv[0]);
+				if (fullpath_command == NULL)
+				{
+					return (EXIT_FAILURE);
+				}
+				command_found = stat(fullpath_command, &st);
+				if (command_found == 0)
+				{
+					break;
+				}
+				directory = directories[++i];
+				free(fullpath_command);
 			}
-			command_found = stat(fullpath_command, &st);
-			if (command_found == 0)
-			{
-				break;
-			}
-			directory = directories[++i];
-			free(fullpath_command);
 		}
 		free(envpath_copy);
 		if (command_found == 0)
