@@ -18,7 +18,7 @@ int main(void)
 		if (getline(&line, &bufsize, stdin) == -1)
 		{
 			free(line);
-			return (0);
+			return (status);
 		}
 		else
 		{
@@ -29,7 +29,7 @@ int main(void)
 			{
 				free(line);
 				free(tokens);
-				return (0);
+				return (status);
 			}
 			else if (_strcmp(first_token, ENV_BUILT_IN) == 0)
 			{

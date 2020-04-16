@@ -17,7 +17,9 @@ int execute(char **);
 char **split_line(char *, char *);
 char *concat_command(char *, char *);
 int execute2(char **argv);
+char *execute1(char **argv);
 char *src_command(char *farg);
+void write_error(char *s);
 
 extern char **environ;
 int _strlen(char *s);

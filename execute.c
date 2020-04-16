@@ -9,7 +9,16 @@ int execute(char **argv)
 {
 	pid_t pid;
 	int child_status;
+	char *fullcommand;
 
+	fullcommand = execute1(argv);
+	if (fullcommand == NULL)
+	{
+		free(fullcommand);
+		write_error("not found\n");
+		return (127);
+	}
+	argv[0] = fullcommand;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -25,20 +34,20 @@ int execute(char **argv)
 			waitpid(pid, &child_status, WUNTRACED);
 		} while (!WIFEXITED(child_status) && !WIFSIGNALED(child_status));
 	}
+	free(fullcommand);
 	return (child_status);
 }
 /**
- * execute2 - launch the command
+ * execute1 - launch the command
  * @argv: arguments
  *
  * Return: always successfull
 */
-int execute2(char **argv)
+char *execute1(char **argv)
 {
-	char **arguments = argv;
 	struct stat st;
 	char *fullpath_command = NULL;
-	char *first_arg = arguments[0];
+	char *first_arg = argv[0];
 
 	if (stat(first_arg, &st) == 0)
 	{
@@ -48,12 +57,21 @@ int execute2(char **argv)
 	{
 		fullpath_command = src_command(first_arg);
 	}
-	if (fullpath_command != NULL)
+	return (fullpath_command);
+}
+/**
+ * execute2 - src command and execute
+ * @argv: arguments
+ *
+ * Return: always successfull
+*/
+int execute2(char **argv)
+{
+	if (argv[0] != NULL)
 	{
 		char **envp = environ;
 
-		arguments[0] = fullpath_command;
-		if (execve(fullpath_command, arguments, envp) == -1)
+		if (execve(argv[0], argv, envp) == -1)
 		{
 			perror("Error");
 		}
@@ -86,6 +104,7 @@ char *src_command(char *farg)
 		fullpath_command = concat_command(directory, first_arg);
 		if (fullpath_command == NULL)
 		{
+			free(fullpath_command);
 			return (NULL);
 		}
 		command_found = stat(fullpath_command, &st);
