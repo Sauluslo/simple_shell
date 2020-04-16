@@ -27,6 +27,7 @@ int main(void)
 	do {
 		printf("$ ");
 		char *line = NULL;
+
 		if (getline(&line, &bufsize, stdin) == -1)
 		{
 			free(line);
@@ -36,6 +37,7 @@ int main(void)
 		{
 			char **tokens = split_line(line, DEL_DEF);
 			char *first_token = tokens[0];
+
 			if (_strcmp(first_token, EXIT_BUILT_IN) == 0)
 			{
 				free(line);
@@ -73,14 +75,15 @@ char **split_line(char *line, char *delim)
 
 	_strcpy(line_copy, line);
 	word = strtok(line_copy, delim);
-	while (word != NULL) {
+	while (word != NULL)
+	{
 		tokens_len++;
 		word = strtok(NULL, delim);
 	}
-
 	tokens = malloc(tokens_len * sizeof(char *));
 	word = strtok(line, delim);
-	while (word != NULL) {
+	while (word != NULL)
+	{
 		tokens[pos++] = word;
 		word = strtok(NULL, delim);
 	}
@@ -144,6 +147,7 @@ int execute(char **argv)
 		if (command_found == 0)
 		{
 			char **envp = environ;
+
 			if (execve(fullpath_command, arguments, envp) == -1)
 			{
 				perror("Error");
