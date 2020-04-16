@@ -7,6 +7,8 @@
 #include "shell.h"
 
 #define DEL_DEF " \t\r\n\a"
+#define EXIT_BUILT_IN "exit"
+#define ENV_BUILT_IN "env"
 
 void print_env(void);
 int execute(char **);
@@ -19,29 +21,28 @@ char *concat_command(char *, char *);
 */
 int main(void)
 {
+	int status = 0;
 	size_t bufsize = 0;
-	int status;
 
-	printf("$ ");
-	while (1)
-	{
+	do {
+		printf("$ ");
 		char *line = NULL;
-
 		if (getline(&line, &bufsize, stdin) == -1)
 		{
+			free(line);
 			return (0);
 		}
 		else
 		{
 			char **tokens = split_line(line, DEL_DEF);
-
-			if (_strcmp(tokens[0], "exit") == 0)
+			char *first_token = tokens[0];
+			if (_strcmp(first_token, EXIT_BUILT_IN) == 0)
 			{
-				free(tokens);
 				free(line);
+				free(tokens);
 				return (0);
 			}
-			else if (_strcmp(tokens[0], "env") == 0)
+			else if (_strcmp(first_token, ENV_BUILT_IN) == 0)
 			{
 				print_env();
 			}
@@ -49,11 +50,11 @@ int main(void)
 			{
 				status = execute(tokens);
 			}
-			printf("$ ");
 			free(tokens);
 		}
 		free(line);
-	}
+	} while (1);
+
 	exit(status);
 }
 /**
@@ -65,33 +66,31 @@ int main(void)
 */
 char **split_line(char *line, char *delim)
 {
-	int pos = 0, bufsize = 1;
-	char **tokens = malloc((bufsize + 1) * sizeof(char *));
-	char *word;
+	int pos = 0, tokens_len = 1;
+	char *word = NULL;
+	char **tokens = NULL;
+	char *line_copy = malloc((_strlen(line) + 1) * sizeof(char));
 
-	word = strtok(line, delim);
-	while (word != NULL)
-	{
-		if (pos >= bufsize)
-		{
-			bufsize++;
-			tokens = realloc(tokens, (bufsize + 1) * sizeof(char *));
-		}
-		tokens[pos] = word;
-		pos++;
+	_strcpy(line_copy, line);
+	word = strtok(line_copy, delim);
+	while (word != NULL) {
+		tokens_len++;
 		word = strtok(NULL, delim);
 	}
-	tokens[pos] = NULL;
 
-	if (pos < bufsize)
-	{
-		tokens = realloc(tokens, pos * sizeof(char *));
+	tokens = malloc(tokens_len * sizeof(char *));
+	word = strtok(line, delim);
+	while (word != NULL) {
+		tokens[pos++] = word;
+		word = strtok(NULL, delim);
 	}
+	free(word);
+	free(line_copy);
 	return (tokens);
 }
 /**
  * execute - execute my progrman
- * @argv: vectores
+ * @argv: arguments vector
  *
  * Return: always successful
 */
@@ -99,29 +98,20 @@ int execute(char **argv)
 {
 	pid_t pid;
 	int child_status;
+	char **arguments = argv;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		int i = 0;
+		int i = 0, command_found = 0;
 		struct stat st;
-		int command_found;
 		char *fullpath_command = NULL;
-		/**
-		*char **directories;
-		*char *directory;
-		*char *envpath = getenv("PATH");
-		*char *envpath_copy = malloc(_strlen(envpath) + 1);
+		char *first_arg = arguments[0];
 
-		*_strcpy(envpath_copy, envpath);
-		*directories = split_line(envpath_copy, ":");
-		*directory = directories[i];
-		*/
-
-		command_found = stat(argv[0], &st);
+		command_found = stat(first_arg, &st);
 		if (command_found == 0)
 		{
-			fullpath_command = argv[0];
+			fullpath_command = first_arg;
 		}
 		else
 		{
@@ -135,7 +125,7 @@ int execute(char **argv)
 			directory = directories[i];
 			while (directory != NULL)
 			{
-				fullpath_command = concat_command(directory, argv[0]);
+				fullpath_command = concat_command(directory, first_arg);
 				if (fullpath_command == NULL)
 				{
 					return (EXIT_FAILURE);
@@ -153,7 +143,8 @@ int execute(char **argv)
 		}
 		if (command_found == 0)
 		{
-			if (execve(fullpath_command, argv, environ) == -1)
+			char **envp = environ;
+			if (execve(fullpath_command, arguments, envp) == -1)
 			{
 				perror("Error");
 			}
