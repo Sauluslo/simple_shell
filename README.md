@@ -16,7 +16,7 @@ This project was written in C in order to emulate the linux sh shell and study h
 
 # HOW INSTALL
 If you want to test the functionality of this shell, follow the next steps:
-
+|------------------------|
 |(1)- Enter your terminal.
 |(2)- Clone this repository.
 |-->$ git clone https://github.com/Sauluslo/simple_shell.git
@@ -24,3 +24,4 @@ If you want to test the functionality of this shell, follow the next steps:
 |-->$ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh -g*|
 |(4)- Run.
 |-->$ ./hsh
+|------------------------|
