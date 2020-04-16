@@ -1,47 +1,16 @@
 .TH SIMPLE_SHELL(1) "13 APRIL 2020" "v.01" "man_1_simple_shell"
 .SH NAME
-.B simple_shell - interpeter of line commands
+.B simple shell - interpeter line of commands, hsh (Holberton Simple Shell)
 .SH SYNOPSIS
-_printf FORMAT [ARGUMENT]...
-_printf OPTION
+Mode of compile.
+gcc -Wall -Werror -Wextra -pedantic *.c -o hsh -g
+Mode of Execute
+./hsh
 .SH DESCRIPTION
-Print ARGUMENT(s) according to FORMAT, or execute according to OPTION:
-.PP
---help display this help and exit
-.PP
---version
-.PP
-output version information and exit
-FORMAT controls the output as in C printf.  Interpreted sequences are:
-.PP
-\\"     double quote
-.PP
-\\\     backslash
-.PP
-\\a     alert (BEL)
-.PP
-\\b     backspace
-.PP
-\\c     produce no further output
-.PP
-\\e     escape
-.PP
-\\f     form feed
-.PP
-\\n     new line
-.PP
-\\r     carriage return
-.PP
-\\t     horizontal tab
-.PP
-\\v     vertical tab
+This project was written in C in order to emulate the linux sh shell and study how its background processes work.
 .SH AUTHOR
-Written by Santiago Castillo - Aldebaran Lopera.
+Written by Aldebaran Lopera <1617@holbertonschool.com>.
 .SH REPORTING BUGS
 Report printf bugs to Aldebaranlopera14@gmail.com
 .SH SEE ALSO
-printf(3)
-The full documentation for printf is maintained as a Texinfo manual.  If the  info  and  printf  programs  are
-properly installed at your site, the command
-info coreutils 'printf invocation'
-should give you access to the complete manual.
+sh(), execve(), strlen(), strcmp(), strcpy(), waitpid(), strcat(), getline(), strtok(), fork(), wait().
