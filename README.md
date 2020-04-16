@@ -37,7 +37,7 @@ hsh main.c shell.c
 ($)
 ($) exit
 $
-|----------------------------------------------------|
+
 But also in non-interactive mode:
 |----------------------------------------------------|
 $ echo "/bin/ls" | ./hsh
@@ -51,7 +51,7 @@ $ cat test_ls_2 | ./hsh
 hsh main.c shell.c test_ls_2
 hsh main.c shell.c test_ls_2
 $
-|----------------------------------------------------|
+
 # AUTHORS
 
 Aldebaran Lopera <1617@holbertonschool.com>
