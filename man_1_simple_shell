@@ -8,9 +8,35 @@ Mode of Execute
 ./hsh
 .SH DESCRIPTION
 This project was written in C in order to emulate the linux sh shell and study how its background processes work.
+.SH TESTING MODE
+.B Your shell should work like this in interactive mode:
+.PP
+$ ./hsh
+($) /bin/ls
+hsh main.c shell.c
+($)
+($) exit
+$
+.B But also in non-interactive mode:
+$ echo "/bin/ls" | ./hsh
+hsh main.c shell.c test_ls_2
+$
+$ cat test_ls_2
+/bin/ls
+/bin/ls
+$
+$ cat test_ls_2 | ./hsh
+hsh main.c shell.c test_ls_2
+hsh main.c shell.c test_ls_2
+$
 .SH AUTHOR
 Written by Aldebaran Lopera <1617@holbertonschool.com>.
 .SH REPORTING BUGS
 Report printf bugs to Aldebaranlopera14@gmail.com
+.SH EXAMPLE
+Now to execute a command in interative mode, in this case to run
+$ ls
+and some arguments..
+$ ls -lisa
 .SH SEE ALSO
 sh(), execve(), strlen(), strcmp(), strcpy(), waitpid(), strcat(), getline(), strtok(), fork(), wait().
