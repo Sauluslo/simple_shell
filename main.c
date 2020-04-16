@@ -6,7 +6,7 @@
 */
 int main(void)
 {
-	int interative = isatty(fileno(stdin));
+	int interative = isatty(STDIN_FILENO);
 	int status = 0;
 	size_t bufsize = 0;
 
@@ -35,7 +35,7 @@ int main(void)
 			{
 				print_env();
 			}
-			else
+			else if (tokens[0] != NULL)
 			{
 				status = execute(tokens);
 			}

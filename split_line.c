@@ -28,6 +28,7 @@ char **split_line(char *line, char *delim)
 		tokens[pos++] = word;
 		word = strtok(NULL, delim);
 	}
+	tokens[pos] = NULL;
 	free(word);
 	free(line_copy);
 	return (tokens);

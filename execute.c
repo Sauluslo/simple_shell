@@ -52,6 +52,7 @@ int execute2(char **argv)
 	{
 		char **envp = environ;
 
+		arguments[0] = fullpath_command;
 		if (execve(fullpath_command, arguments, envp) == -1)
 		{
 			perror("Error");
