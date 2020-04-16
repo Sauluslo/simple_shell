@@ -16,7 +16,7 @@ int execute(char **argv)
 	{
 		free(fullcommand);
 		write_error("not found\n");
-		return (127);
+		return (EXIT_FAILURE);
 	}
 	argv[0] = fullcommand;
 	pid = fork();
