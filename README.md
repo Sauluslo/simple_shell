@@ -16,6 +16,7 @@ This project was written in C in order to emulate the linux sh shell and study h
 
 # HOW INSTALL
 If you want to test the functionality of this shell, follow the next steps:
+
 |------------------------|
 |(1)- Enter your terminal.
 |(2)- Clone this repository.
@@ -25,3 +26,33 @@ If you want to test the functionality of this shell, follow the next steps:
 |(4)- Run.
 |-->$ ./hsh
 |------------------------|
+
+# USAGE
+
+This shell behaves similarly to sh, once you have run the program, a commandprompt appears where you can type and execute the command you want.
+
+Your shell should work like this in interactive mode:
+$ ./hsh
+($) /bin/ls
+hsh main.c shell.c
+($)
+($) exit
+$
+
+But also in non-interactive mode:
+
+$ echo "/bin/ls" | ./hsh
+hsh main.c shell.c test_ls_2
+$
+$ cat test_ls_2
+/bin/ls
+/bin/ls
+$
+$ cat test_ls_2 | ./hsh
+hsh main.c shell.c test_ls_2
+hsh main.c shell.c test_ls_2
+$
+
+# AUTHORS
+
+Aldebaran Lopera <1617@holbertonschool.com>
