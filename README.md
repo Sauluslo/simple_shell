@@ -13,7 +13,6 @@
 |----------------------------------------------------------------|
 |ABOUT MY PROJECT
 |This project was written in C in order to emulate the linux sh shell and study how its background processes work.
------------------------------------------------------------------------------------------------------------------
 |HOW INSTALL
 |If you want to test the functionality of this shell, follow the next steps:
 |(1)- Enter your terminal.
