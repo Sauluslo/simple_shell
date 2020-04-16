@@ -43,6 +43,5 @@ int main(void)
 		}
 		free(line);
 	} while (1);
-	printf("\n");
 	exit(status);
 }
