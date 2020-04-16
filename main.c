@@ -6,13 +6,15 @@
 */
 int main(void)
 {
+	int interative = isatty(fileno(stdin));
 	int status = 0;
 	size_t bufsize = 0;
 
 	do {
 		char *line = NULL;
-		printf("$ ");
 
+		if (interative == 1)
+			printf("$ ");
 		if (getline(&line, &bufsize, stdin) == -1)
 		{
 			free(line);
@@ -41,5 +43,6 @@ int main(void)
 		}
 		free(line);
 	} while (1);
+	printf("\n");
 	exit(status);
 }
