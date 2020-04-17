@@ -38,7 +38,7 @@ int execute(char **argv)
 		} while (!WIFEXITED(child_status) && !WIFSIGNALED(child_status));
 	}
 	free(fullcommand);
-	return (child_status);
+	return (WEXITSTATUS(child_status));
 }
 /**
  * execute1 - launch the command
