@@ -92,7 +92,7 @@ char *src_command(char *farg)
 {
 	char **directories;
 	char *directory;
-	char *envpath = getenv("PATH");
+	char *envpath = _getenv("PATH");
 	char *envpath_copy = malloc(_strlen(envpath) + 1);
 	char *first_arg = farg;
 	char *fullpath_command;
@@ -120,6 +120,7 @@ char *src_command(char *farg)
 	}
 	free(directories);
 	free(envpath_copy);
+	free(envpath);
 	if (command_found == 0)
 		return (fullpath_command);
 	else

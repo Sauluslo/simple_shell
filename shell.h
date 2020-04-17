@@ -19,6 +19,8 @@ char *concat_command(char *, char *);
 int execute2(char **argv);
 char *execute1(char **argv);
 char *src_command(char *farg);
+char *_getenv(char *key);
+char *_getvalue(char *keyvalue, char *key);
 void write_error(char *s);
 
 extern char **environ;
