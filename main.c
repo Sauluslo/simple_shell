@@ -18,7 +18,6 @@ int main(void)
 		if (getline(&line, &bufsize, stdin) == -1)
 		{
 			free(line);
-			printf("\n");
 			break;
 		}
 		else

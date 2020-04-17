@@ -14,9 +14,12 @@ int execute(char **argv)
 	fullcommand = execute1(argv);
 	if (fullcommand == NULL)
 	{
+		char *errorbuf = NULL;
+		char *errormsg = _strcat(argv[0], ": not found\n", errorbuf);
+		write_error(errormsg);
 		free(fullcommand);
-		write_error("not found\n");
-		return(127);
+		free(errormsg);
+		return (127);
 	}
 	argv[0] = fullcommand;
 	pid = fork();
@@ -51,7 +54,8 @@ char *execute1(char **argv)
 
 	if (stat(first_arg, &st) == 0)
 	{
-		fullpath_command = first_arg;
+		fullpath_command = malloc(_strlen(first_arg) + 1 * sizeof(char));
+		_strcpy(fullpath_command, first_arg);
 	}
 	else
 	{
@@ -76,7 +80,6 @@ int execute2(char **argv)
 			perror("Error");
 		}
 	}
-	perror("Error");
 	exit(EXIT_FAILURE);
 }
 /**

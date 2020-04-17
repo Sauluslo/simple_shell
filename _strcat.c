@@ -23,8 +23,6 @@ char *_strcat(char *str1, char *str2, char *res)
 		res[i] = str1[i];
 		i++;
 	}
-	res[i] = '/';
-	i++;
 	j = 0;
 	while (str2[j])
 	{
