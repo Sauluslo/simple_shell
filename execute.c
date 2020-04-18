@@ -2,10 +2,10 @@
 /**
  * execute - execute my progrman
  * @argv: arguments vector
- *
+:*
  * Return: always successful
 */
-int execute(char **argv)
+int execute(char **argv, char *shell_name, int count)
 {
 	pid_t pid;
 	int child_status;
@@ -14,13 +14,30 @@ int execute(char **argv)
 	fullcommand = execute1(argv);
 	if (fullcommand == NULL)
 	{
-		char *errorbuf = NULL;
-		char *errormsg = _strcat(argv[0], ": not found\n", errorbuf);
+		char *buf1 = NULL;
+		char *buf2 = NULL;
+		char *buf3 = NULL;
+		char *buf4 = NULL;
+		char *buf5 = NULL;
+		char *bufitoa = malloc(100 * sizeof(char)); 
+		char *str1 = _strcat(shell_name, ": ", buf1);
+		char *str2 = _strcat(str1, _itoa(count, bufitoa, 10), buf2);
+		char *str3 = _strcat(str2, ": ", buf3);
+		char *str4 = _strcat(str3, argv[0], buf4);
+		char *errormsg = _strcat(str4, ": not found\n", buf5);
+
 		write_error(errormsg);
 		free(fullcommand);
+		free(str1);
+		free(str2);
+		free(str3);
+		free(str4);
+		free(bufitoa);
 		free(errormsg);
 		return (127);
 	}
+	if (access(fullcommand, X_OK) == -1)
+		return (126);
 	argv[0] = fullcommand;
 	pid = fork();
 	if (pid == 0)

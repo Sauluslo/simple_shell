@@ -4,11 +4,13 @@
  *
  * Return: Always successfull.
 */
-int main(void)
+int main(int argc, char **argv)
 {
 	int interative = isatty(STDIN_FILENO);
 	int status = 0;
 	size_t bufsize = 0;
+	int count = 1;
+	(void) argc;
 
 	do {
 		char *line = NULL;
@@ -37,10 +39,11 @@ int main(void)
 			}
 			else if (tokens[0] != NULL)
 			{
-				status = execute(tokens);
+				status = execute(tokens, argv[0], count);
 			}
 			free(tokens);
 		}
+		count++;
 		free(line);
 	} while (1);
 	exit(status);
