@@ -24,6 +24,8 @@ char *src_command(char *farg);
 char *_getenv(char *key);
 char *_getvalue(char *keyvalue, char *key);
 void write_error(char *s);
+void write_out(char *s);
+void write_in(char *s);
 
 extern char **environ;
 int _strlen(char *s);

@@ -10,13 +10,16 @@ int main(int argc, char **argv)
 	int status = 0;
 	size_t bufsize = 0;
 	int count = 1;
+	char *s = "$ ";
 	(void) argc;
 
 	do {
 		char *line = NULL;
 
 		if (interative == 1)
-			printf("$ ");
+		{
+			write_in(s);
+		}
 		if (getline(&line, &bufsize, stdin) == -1)
 		{
 			free(line);
@@ -35,6 +38,7 @@ int main(int argc, char **argv)
 			}
 			else if (_strcmp(first_token, ENV_BUILT_IN) == 0)
 			{
+				printf("Hello vos");
 				print_env();
 			}
 			else if (tokens[0] != NULL)

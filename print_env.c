@@ -11,7 +11,7 @@ void print_env(void)
 
 	for (; s; i++)
 	{
-		printf("%s\n", s);
+		write_out(s);
 		s = *(environ + i);
 	}
 }

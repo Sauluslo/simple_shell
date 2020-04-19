@@ -7,7 +7,7 @@
 */
 void write_error(char *s)
 {
-	int len = strlen(s);
+	int len = _strlen(s);
 
 	write(STDERR_FILENO, s, len);
 }
