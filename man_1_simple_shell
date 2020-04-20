@@ -39,4 +39,4 @@ $ ls
 and some arguments..
 $ ls -lisa
 .SH SEE ALSO
-sh(), execve(), strlen(), strcmp(), strcpy(), waitpid(), strcat(), getline(), strtok(), fork(), wait().
+sh(), execve(), strlen(), strcmp(), strcpy(), write(), waitpid(), strcat(), getline(), strtok(), fork(), wait().

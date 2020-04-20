@@ -38,12 +38,14 @@ int main(int argc, char **argv)
 			}
 			else if (_strcmp(first_token, ENV_BUILT_IN) == 0)
 			{
-				printf("Hello vos");
 				print_env();
 			}
 			else if (tokens[0] != NULL)
 			{
 				status = execute(tokens, argv[0], count);
+			}
+			else {
+				status = 98;
 			}
 			free(tokens);
 		}
