@@ -2,14 +2,15 @@
 /**
  * _getenv - src PATH
  * @key: name var env
+ * @envp: env
  *
  * Return: Always successful.
 */
-char *_getenv(char *key)
+char *_getenv(char *key, char **envp)
 {
 	int i = 1;
 	char *word;
-	char *line = *environ;
+	char *line = *envp;
 
 	for (; line; i++)
 	{
@@ -26,7 +27,7 @@ char *_getenv(char *key)
 			}
 		}
 
-		line = *(environ + i);
+		line = *(envp + i);
 		free(line_copy);
 	}
 

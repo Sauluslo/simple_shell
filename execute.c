@@ -2,39 +2,23 @@
 /**
  * execute - execute my progrman
  * @argv: arguments vector
-:*
+ * @shell_name: hsh
+ * @count: count error.
+ * @envp: environ.
+ *
  * Return: always successful
 */
-int execute(char **argv, char *shell_name, int count)
+int execute(char **argv, char *shell_name, int count, char **envp)
 {
 	pid_t pid;
 	int child_status;
 	char *fullcommand;
 
-	fullcommand = execute1(argv);
+	fullcommand = execute1(argv, envp);
 	if (fullcommand == NULL)
 	{
-		char *buf1 = NULL;
-		char *buf2 = NULL;
-		char *buf3 = NULL;
-		char *buf4 = NULL;
-		char *buf5 = NULL;
-		char *bufitoa = malloc(100 * sizeof(char)); 
-		char *str1 = _strcat(shell_name, ": ", buf1);
-		char *str2 = _strcat(str1, _itoa(count, bufitoa, 10), buf2);
-		char *str3 = _strcat(str2, ": ", buf3);
-		char *str4 = _strcat(str3, argv[0], buf4);
-		char *errormsg = _strcat(str4, ": not found\n", buf5);
-
-		write_error(errormsg);
 		free(fullcommand);
-		free(str1);
-		free(str2);
-		free(str3);
-		free(str4);
-		free(bufitoa);
-		free(errormsg);
-		return (127);
+		return (error_msg(count, argv, shell_name));
 	}
 	if (access(fullcommand, X_OK) == -1)
 		return (126);
@@ -42,7 +26,7 @@ int execute(char **argv, char *shell_name, int count)
 	pid = fork();
 	if (pid == 0)
 	{
-		execute2(argv);
+		execute2(argv, envp);
 	}
 	else if (pid < 0)
 	{
@@ -60,10 +44,11 @@ int execute(char **argv, char *shell_name, int count)
 /**
  * execute1 - launch the command
  * @argv: arguments
+ * @envp: environ.
  *
  * Return: always successfull
 */
-char *execute1(char **argv)
+char *execute1(char **argv, char **envp)
 {
 	struct stat st;
 	char *fullpath_command = NULL;
@@ -76,22 +61,21 @@ char *execute1(char **argv)
 	}
 	else
 	{
-		fullpath_command = src_command(first_arg);
+		fullpath_command = src_command(first_arg, envp);
 	}
 	return (fullpath_command);
 }
 /**
  * execute2 - src command and execute
  * @argv: arguments
+ * @envp: environ
  *
  * Return: always successfull
 */
-int execute2(char **argv)
+int execute2(char **argv, char **envp)
 {
 	if (argv[0] != NULL)
 	{
-		char **envp = environ;
-
 		if (execve(argv[0], argv, envp) == -1)
 		{
 			perror("Error");
@@ -102,14 +86,15 @@ int execute2(char **argv)
 /**
  * src_command - search command in the path
  * @farg: arguments
+ * @envp: environ
  *
  * Return: always successfull.
 */
-char *src_command(char *farg)
+char *src_command(char *farg, char **envp)
 {
 	char **directories;
 	char *directory;
-	char *envpath = _getenv("PATH");
+	char *envpath = _getenv("PATH", envp);
 	char *envpath_copy = malloc(_strlen(envpath) + 1);
 	char *first_arg = farg;
 	char *fullpath_command;

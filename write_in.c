@@ -1,6 +1,6 @@
 #include "shell.h"
 /**
- * write_ot - print in stdout.
+ * write_in - print in stdin.
  * @s: msg in out.
  *
  * Return: Always successful
