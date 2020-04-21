@@ -37,6 +37,6 @@ int access(const char *pathname, int mode);
 char *_strcat(char *str1, char *str2, char *res);
 void swap(char *xp, char *yp);
 char *reverse(char str[], int length);
-char *_itoa(int num, char* str, int base);
+char *_itoa(int num, char *str, int base);
 
 #endif
