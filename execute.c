@@ -20,7 +20,7 @@ int execute(char **argv, char *shell_name, int count, char **envp)
 		free(fullcommand);
 		return (error_msg(count, argv, shell_name));
 	}
-	if (access(fullcommand, X_OK) == -1)
+	else if (access(fullcommand, X_OK) == -1)
 		return (126);
 	argv[0] = fullcommand;
 	pid = fork();

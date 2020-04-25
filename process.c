@@ -40,7 +40,7 @@ int process(char **argv, char **envp)
 			else if (tokens[0] != NULL)
 				status = execute(tokens, argv[0], count, envp);
 			else
-				status = 98;
+				status = 0;
 			free(tokens);
 		}
 		count++;
